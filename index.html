@@ -25,14 +25,17 @@ button{width:100%;padding:13px;margin-top:9px;border:0;border-radius:8px;backgro
 .red{color:#ff6262}
 .badge{display:inline-block;background:#14382f;color:#65efb5;padding:6px 10px;border-radius:20px;font-size:12px}
 .link{background:none;color:#46e6a5;padding:5px;text-decoration:underline}
+.email{color:#aebed0;font-size:14px;word-break:break-all}
 </style>
 </head>
 
 <body>
+
 <div class="wrap">
 
 <div class="logo">NovaFund</div>
 
+<!-- LOGIN -->
 <div id="auth" class="card">
 
 <h2>Trader Account</h2>
@@ -45,31 +48,55 @@ button{width:100%;padding:13px;margin-top:9px;border:0;border-radius:8px;backgro
 </div>
 
 <button onclick="login()">Login</button>
-
 <button class="secondary" onclick="signup()">Create Account</button>
-
 <button class="link" onclick="forgotPassword()">Forgot Password?</button>
-
 <button class="secondary" onclick="resend()">Resend Confirmation Email</button>
 
 <div id="msg" class="msg"></div>
+
 </div>
 
 
+<!-- DASHBOARD -->
 <div id="dashboard" class="hidden">
 
-<span class="badge">ACTIVE • DEMO</span>
+<span class="badge">TRADER ACCOUNT</span>
 
 <h2>Trader Dashboard</h2>
 
+<div class="email" id="userEmail"></div>
+
 <p>Account: <b>$5,000 Challenge</b></p>
 
-<div class="stat">Balance<div class="big">$5,000</div></div>
-<div class="stat">Equity<div class="big">$5,000</div></div>
-<div class="stat">Profit<div class="big green">+$0</div></div>
-<div class="stat">Profit Target<div class="big">8%</div></div>
-<div class="stat">Daily Loss<div class="big">0%</div></div>
-<div class="stat">Max Drawdown<div class="big">0%</div></div>
+<div class="stat">
+Balance
+<div class="big" id="balance">$5,000</div>
+</div>
+
+<div class="stat">
+Equity
+<div class="big" id="equity">$5,000</div>
+</div>
+
+<div class="stat">
+Profit
+<div class="big green" id="profit">+$0</div>
+</div>
+
+<div class="stat">
+Profit Target
+<div class="big" id="target">8%</div>
+</div>
+
+<div class="stat">
+Daily Loss
+<div class="big" id="dailyLoss">0%</div>
+</div>
+
+<div class="stat">
+Max Drawdown
+<div class="big" id="drawdown">0%</div>
+</div>
 
 <div class="card">
 <h3>Recent Trades</h3>
@@ -81,13 +108,15 @@ button{width:100%;padding:13px;margin-top:9px;border:0;border-radius:8px;backgro
 <button onclick="logout()">Logout</button>
 
 </div>
+
 </div>
 
 
 <script type="module">
 
-import {createClient}
+import { createClient }
 from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
 
 const SUPABASE_URL =
 "https://fbtltoldqbegahrhrhzv.supabase.co";
@@ -96,39 +125,68 @@ const SUPABASE_PUBLISHABLE_KEY =
 "sb_publishable_gEWtMDiKIs03V-DeSMy0Kg_GyB73tt5";
 
 const supabase =
-createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+createClient(
+SUPABASE_URL,
+SUPABASE_PUBLISHABLE_KEY
+);
+
 
 const redirectURL =
 "https://sumitchenurvar-cell.github.io/NOVAFUND/";
 
-const msg=document.getElementById("msg");
+
+const msg =
+document.getElementById("msg");
+
 
 function message(text){
 msg.innerText=text;
 }
 
+
 window.togglePassword=function(){
-const p=document.getElementById("password");
-p.type=p.type==="password"?"text":"password";
+
+const password =
+document.getElementById("password");
+
+password.type =
+password.type==="password"
+? "text"
+: "password";
+
 };
 
 
 window.signup=async function(){
 
-const email=document.getElementById("email").value.trim();
-const password=document.getElementById("password").value;
+const email =
+document.getElementById("email").value.trim();
 
-if(!email||!password){
+const password =
+document.getElementById("password").value;
+
+if(!email || !password){
 message("Email aur password bharo.");
+return;
+}
+
+if(password.length<6){
+message("Password kam se kam 6 characters ka hona chahiye.");
 return;
 }
 
 message("Account create ho raha hai...");
 
-const {data,error}=await supabase.auth.signUp({
+const {data,error} =
+await supabase.auth.signUp({
+
 email,
 password,
-options:{emailRedirectTo:redirectURL}
+
+options:{
+emailRedirectTo:redirectURL
+}
+
 });
 
 if(error){
@@ -137,28 +195,43 @@ return;
 }
 
 if(data.session){
+
+await loadTraderAccount(data.session.user);
+
 showDashboard();
+
 }else{
-message("Account created! Email confirm karke Login karo.");
+
+message(
+"Account created! Email confirm karke Login karo."
+);
+
 }
+
 };
 
 
 window.login=async function(){
 
-const email=document.getElementById("email").value.trim();
-const password=document.getElementById("password").value;
+const email =
+document.getElementById("email").value.trim();
 
-if(!email||!password){
+const password =
+document.getElementById("password").value;
+
+if(!email || !password){
 message("Email aur password bharo.");
 return;
 }
 
 message("Login ho raha hai...");
 
-const {data,error}=await supabase.auth.signInWithPassword({
+const {data,error} =
+await supabase.auth.signInWithPassword({
+
 email,
 password
+
 });
 
 if(error){
@@ -166,13 +239,108 @@ message(error.message);
 return;
 }
 
+await loadTraderAccount(data.user);
+
 showDashboard();
+
 };
+
+
+async function loadTraderAccount(user){
+
+document.getElementById("userEmail").innerText =
+user.email || "";
+
+let {data,error} =
+await supabase
+.from("trader_accounts")
+.select("*")
+.eq("user_id",user.id)
+.maybeSingle();
+
+
+if(error){
+
+console.error(error);
+
+message(
+"Account data load nahi ho saka: "
++ error.message
+);
+
+return;
+
+}
+
+
+if(!data){
+
+const newAccount={
+
+user_id:user.id,
+account_size:5000,
+balance:5000,
+equity:5000,
+profit:0,
+profit_target:8,
+daily_loss:0,
+max_drawdown:0
+
+};
+
+
+const result =
+await supabase
+.from("trader_accounts")
+.insert(newAccount)
+.select()
+.single();
+
+
+if(result.error){
+
+console.error(result.error);
+
+message(
+"Trader account create nahi ho saka: "
++ result.error.message
+);
+
+return;
+
+}
+
+data=result.data;
+
+}
+
+
+document.getElementById("balance").innerText =
+"$"+Number(data.balance).toLocaleString();
+
+document.getElementById("equity").innerText =
+"$"+Number(data.equity).toLocaleString();
+
+document.getElementById("profit").innerText =
+(data.profit>=0?"+$":"-$")
++Math.abs(Number(data.profit)).toLocaleString();
+
+document.getElementById("target").innerText =
+Number(data.profit_target)+"%";
+
+document.getElementById("dailyLoss").innerText =
+Number(data.daily_loss)+"%";
+
+document.getElementById("drawdown").innerText =
+Number(data.max_drawdown)+"%";
+
+}
 
 
 window.resend=async function(){
 
-const email=document.getElementById("email").value.trim();
+const email =
+document.getElementById("email").value.trim();
 
 if(!email){
 message("Pehle email enter karo.");
@@ -181,41 +349,59 @@ return;
 
 message("Confirmation email bhej rahe hain...");
 
-const {error}=await supabase.auth.resend({
+const {error} =
+await supabase.auth.resend({
+
 type:"signup",
+
 email,
-options:{emailRedirectTo:redirectURL}
+
+options:{
+emailRedirectTo:redirectURL
+}
+
 });
 
 if(error){
 message(error.message);
 }else{
-message("Naya confirmation email bhej diya gaya hai.");
+message("Confirmation email bhej diya gaya hai.");
 }
+
 };
 
 
 window.forgotPassword=async function(){
 
-const email=document.getElementById("email").value.trim();
+const email =
+document.getElementById("email").value.trim();
 
 if(!email){
-message("Pehle apna email enter karo.");
+message("Pehle email enter karo.");
 return;
 }
 
 message("Password reset email bhej rahe hain...");
 
-const {error}=await supabase.auth.resetPasswordForEmail(
+const {error} =
+await supabase.auth.resetPasswordForEmail(
+
 email,
-{redirectTo:redirectURL}
+
+{
+redirectTo:redirectURL
+}
+
 );
 
 if(error){
 message(error.message);
 }else{
-message("Password reset email bhej diya gaya hai. Gmail/Spam check karo.");
+message(
+"Password reset email bhej diya gaya hai."
+);
 }
+
 };
 
 
@@ -223,35 +409,61 @@ window.logout=async function(){
 
 await supabase.auth.signOut();
 
-document.getElementById("dashboard").classList.add("hidden");
-document.getElementById("auth").classList.remove("hidden");
+document
+.getElementById("dashboard")
+.classList.add("hidden");
+
+document
+.getElementById("auth")
+.classList.remove("hidden");
 
 message("Logout successful.");
+
 };
 
 
 function showDashboard(){
 
-document.getElementById("auth").classList.add("hidden");
-document.getElementById("dashboard").classList.remove("hidden");
+document
+.getElementById("auth")
+.classList.add("hidden");
+
+document
+.getElementById("dashboard")
+.classList.remove("hidden");
 
 }
 
 
-const {data:{session}}=await supabase.auth.getSession();
+const {
+data:{session}
+} =
+await supabase.auth.getSession();
+
 
 if(session){
+
+await loadTraderAccount(session.user);
+
 showDashboard();
+
 }
 
-supabase.auth.onAuthStateChange((event,session)=>{
+
+supabase.auth.onAuthStateChange(
+async (event,session)=>{
 
 if(session){
+
+await loadTraderAccount(session.user);
+
 showDashboard();
+
 }
 
 });
 
 </script>
+
 </body>
 </html>
