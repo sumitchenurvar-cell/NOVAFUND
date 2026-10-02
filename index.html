@@ -2,59 +2,198 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NovaFund Trader Dashboard</title>
+<title>NovaFund | Funded Trading</title>
+
 <style>
-body{margin:0;background:#07111f;color:white;font-family:Arial;padding:20px}
-.logo{font-size:28px;font-weight:bold;color:#46e6a5}
-h1{font-size:32px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px}
-.card{background:#0d1a2b;border:1px solid #29415d;border-radius:15px;padding:20px}
-.value{font-size:27px;font-weight:bold;margin-top:8px}
-.green{color:#46e6a5}
-button{padding:13px 20px;border:0;border-radius:9px;background:#46e6a5;font-weight:bold}
-input{display:block;width:100%;padding:12px;margin:10px 0;box-sizing:border-box}
-#dashboard{display:none}
+*{box-sizing:border-box}
+body{margin:0;background:#07111f;color:#fff;font-family:Arial}
+nav{padding:18px 6%;display:flex;justify-content:space-between;border-bottom:1px solid #24354a}
+.logo{font-size:25px;font-weight:bold;color:#46e6a5}
+nav button{background:none;color:white;border:0;margin-left:10px}
+.wrap{max-width:1100px;margin:auto;padding:30px 6%}
+.hero{text-align:center;padding:35px 0}
+.hero h1{font-size:40px;margin:10px}
+.muted{color:#9eafc4}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.card{background:#0d1a2b;border:1px solid #29415d;border-radius:16px;padding:22px}
+.price{font-size:32px;font-weight:bold;color:#46e6a5}
+.card button,.login button{background:#46e6a5;color:#061018;border:0;padding:12px 20px;border-radius:9px;font-weight:bold}
+ul{line-height:2}
+.badge{display:inline-block;background:#14382f;color:#65efb5;padding:6px 10px;border-radius:20px;font-size:12px}
+.stat{font-size:27px;font-weight:bold;margin-top:8px}
+.bar{height:10px;background:#182a40;border-radius:10px;margin-top:10px}
+.fill{height:100%;width:60%;background:#46e6a5;border-radius:10px}
+.hidden{display:none}
+input{width:100%;padding:13px;margin:8px 0;background:#091625;color:white;border:1px solid #29415d;border-radius:8px}
+.login{max-width:400px;margin:50px auto}
+footer{text-align:center;padding:30px;color:#71839a}
 </style>
 </head>
+
 <body>
 
+<nav>
 <div class="logo">NovaFund</div>
+<div>
+<button onclick="home()">Home</button>
+<button onclick="plans()">Challenges</button>
+<button onclick="loginPage()">Login</button>
+</div>
+</nav>
 
-<div id="login">
-<h1>Trader Login</h1>
-<p>Demo Trading Account</p>
-<input placeholder="Email">
-<input type="password" placeholder="Password">
-<button onclick="login()">Login</button>
+<div class="wrap">
+
+<section id="home">
+<div class="hero">
+<span class="badge">FUNDED TRADING PLATFORM</span>
+<h1>Trade. Prove. Get Funded.</h1>
+<p class="muted">NovaFund simulated funded-trading platform prototype.</p>
+<button onclick="plans()">View Challenges</button>
 </div>
 
-<div id="dashboard">
-<h1>Trader Dashboard</h1>
-<p>Account: <b>$5,000 Challenge</b></p>
+<div class="grid">
+<div class="card">
+<h2>Risk Management</h2>
+<p class="muted">Track daily loss and maximum drawdown.</p>
+</div>
+<div class="card">
+<h2>Trader Dashboard</h2>
+<p class="muted">Monitor balance, equity and trading progress.</p>
+</div>
+<div class="card">
+<h2>Transparent Rules</h2>
+<p class="muted">Challenge rules are displayed clearly.</p>
+</div>
+</div>
+</section>
+
+<section id="plans" class="hidden">
+<h1>Choose Your Challenge</h1>
+<p class="muted">Demo challenge plans — pricing and payments are not enabled.</p>
 
 <div class="grid">
-<div class="card">Balance<div class="value">$5,240</div></div>
-<div class="card">Equity<div class="value">$5,215</div></div>
-<div class="card">Profit<div class="value green">+$240</div></div>
-<div class="card">Profit Target<div class="value">8%</div></div>
-<div class="card">Daily Loss<div class="value">1.2%</div></div>
-<div class="card">Max Drawdown<div class="value">2.1%</div></div>
+
+<div class="card">
+<h2>$5K Challenge</h2>
+<div class="price">$—</div>
+<ul>
+<li>Profit Target: 8%</li>
+<li>Daily Loss: 5%</li>
+<li>Max Drawdown: 10%</li>
+<li>Demo Account</li>
+</ul>
+<button onclick="loginPage()">Start Demo</button>
+</div>
+
+<div class="card">
+<h2>$10K Challenge</h2>
+<div class="price">$—</div>
+<ul>
+<li>Profit Target: 8%</li>
+<li>Daily Loss: 5%</li>
+<li>Max Drawdown: 10%</li>
+<li>Demo Account</li>
+</ul>
+<button onclick="loginPage()">Start Demo</button>
+</div>
+
+<div class="card">
+<h2>$25K Challenge</h2>
+<div class="price">$—</div>
+<ul>
+<li>Profit Target: 8%</li>
+<li>Daily Loss: 5%</li>
+<li>Max Drawdown: 10%</li>
+<li>Demo Account</li>
+</ul>
+<button onclick="loginPage()">Start Demo</button>
+</div>
+
+</div>
+</section>
+
+<section id="login" class="login hidden">
+<div class="card">
+<h2>Trader Login</h2>
+<p class="muted">Demo login only.</p>
+<input placeholder="Email">
+<input type="password" placeholder="Password">
+<button onclick="dashboard()">Login</button>
+</div>
+</section>
+
+<section id="dashboard" class="hidden">
+<span class="badge">ACTIVE • DEMO</span>
+<h1>Trader Dashboard</h1>
+<p class="muted">Account: $5,000 Challenge</p>
+
+<div class="grid">
+
+<div class="card">
+Balance
+<div class="stat">$5,240</div>
+</div>
+
+<div class="card">
+Equity
+<div class="stat">$5,215</div>
+</div>
+
+<div class="card">
+Profit
+<div class="stat" style="color:#46e6a5">+$240</div>
+</div>
+
+<div class="card">
+Profit Target
+<div class="stat">8%</div>
+<div class="bar"><div class="fill"></div></div>
+</div>
+
+<div class="card">
+Daily Loss
+<div class="stat">1.2%</div>
+<p class="muted">Limit: 5%</p>
+</div>
+
+<div class="card">
+Max Drawdown
+<div class="stat">2.1%</div>
+<p class="muted">Limit: 10%</p>
+</div>
+
 </div>
 
 <br>
+
 <div class="card">
 <h2>Recent Trades</h2>
-<p>XAUUSD — BUY — <span class="green">+$85</span></p>
-<p>EURUSD — SELL — <span class="green">+$55</span></p>
-<p>GBPUSD — BUY — <span style="color:red">-$20</span></p>
+<p>XAUUSD — BUY — <b style="color:#46e6a5">+$85</b></p>
+<p>EURUSD — SELL — <b style="color:#46e6a5">+$55</b></p>
+<p>GBPUSD — BUY — <b style="color:#ff5b5b">-$20</b></p>
 </div>
+</section>
+
 </div>
 
+<footer>
+NovaFund © 2026 • Prototype / Simulated Trading
+</footer>
+
 <script>
-function login(){
-document.getElementById("login").style.display="none";
-document.getElementById("dashboard").style.display="block";
+function hide(){
+document.getElementById("home").className="hidden";
+document.getElementById("plans").className="hidden";
+document.getElementById("login").className="login hidden";
+document.getElementById("dashboard").className="hidden";
 }
+
+function home(){hide();document.getElementById("home").className=""}
+function plans(){hide();document.getElementById("plans").className=""}
+function loginPage(){hide();document.getElementById("login").className="login"}
+function dashboard(){hide();document.getElementById("dashboard").className=""}
+
+home();
 </script>
 
 </body>
