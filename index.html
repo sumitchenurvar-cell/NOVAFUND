@@ -2,31 +2,25 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NovaFund | Funded Trading</title>
-
+<title>NovaFund | Admin & Trader</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#07111f;color:#fff;font-family:Arial}
-nav{padding:18px 6%;display:flex;justify-content:space-between;border-bottom:1px solid #24354a}
+nav{padding:18px 6%;display:flex;justify-content:space-between;border-bottom:1px solid #26384d}
 .logo{font-size:25px;font-weight:bold;color:#46e6a5}
-nav button{background:none;color:white;border:0;margin-left:10px}
+nav button{background:none;border:0;color:white;margin-left:8px}
 .wrap{max-width:1100px;margin:auto;padding:30px 6%}
-.hero{text-align:center;padding:35px 0}
-.hero h1{font-size:40px;margin:10px}
-.muted{color:#9eafc4}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
-.card{background:#0d1a2b;border:1px solid #29415d;border-radius:16px;padding:22px}
-.price{font-size:32px;font-weight:bold;color:#46e6a5}
-.card button,.login button{background:#46e6a5;color:#061018;border:0;padding:12px 20px;border-radius:9px;font-weight:bold}
-ul{line-height:2}
-.badge{display:inline-block;background:#14382f;color:#65efb5;padding:6px 10px;border-radius:20px;font-size:12px}
-.stat{font-size:27px;font-weight:bold;margin-top:8px}
-.bar{height:10px;background:#182a40;border-radius:10px;margin-top:10px}
-.fill{height:100%;width:60%;background:#46e6a5;border-radius:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.card{background:#0d1a2b;border:1px solid #29415d;border-radius:15px;padding:20px}
+.value{font-size:28px;font-weight:bold;margin-top:8px}
+.green{color:#46e6a5}.red{color:#ff6262}
+.badge{display:inline-block;padding:6px 10px;border-radius:20px;background:#14382f;color:#65efb5;font-size:12px}
+button{padding:11px 17px;border:0;border-radius:8px;background:#46e6a5;color:#061018;font-weight:bold}
+input{width:100%;padding:12px;margin:8px 0;background:#091625;color:white;border:1px solid #29415d;border-radius:8px}
+table{width:100%;border-collapse:collapse}
+td,th{padding:12px;border-bottom:1px solid #24354a;text-align:left}
 .hidden{display:none}
-input{width:100%;padding:13px;margin:8px 0;background:#091625;color:white;border:1px solid #29415d;border-radius:8px}
 .login{max-width:400px;margin:50px auto}
-footer{text-align:center;padding:30px;color:#71839a}
 </style>
 </head>
 
@@ -35,131 +29,63 @@ footer{text-align:center;padding:30px;color:#71839a}
 <nav>
 <div class="logo">NovaFund</div>
 <div>
-<button onclick="home()">Home</button>
-<button onclick="plans()">Challenges</button>
-<button onclick="loginPage()">Login</button>
+<button onclick="trader()">Trader</button>
+<button onclick="admin()">Admin</button>
 </div>
 </nav>
 
 <div class="wrap">
 
-<section id="home">
-<div class="hero">
-<span class="badge">FUNDED TRADING PLATFORM</span>
-<h1>Trade. Prove. Get Funded.</h1>
-<p class="muted">NovaFund simulated funded-trading platform prototype.</p>
-<button onclick="plans()">View Challenges</button>
-</div>
-
-<div class="grid">
+<section id="login" class="login">
 <div class="card">
-<h2>Risk Management</h2>
-<p class="muted">Track daily loss and maximum drawdown.</p>
-</div>
-<div class="card">
-<h2>Trader Dashboard</h2>
-<p class="muted">Monitor balance, equity and trading progress.</p>
-</div>
-<div class="card">
-<h2>Transparent Rules</h2>
-<p class="muted">Challenge rules are displayed clearly.</p>
-</div>
-</div>
-</section>
-
-<section id="plans" class="hidden">
-<h1>Choose Your Challenge</h1>
-<p class="muted">Demo challenge plans — pricing and payments are not enabled.</p>
-
-<div class="grid">
-
-<div class="card">
-<h2>$5K Challenge</h2>
-<div class="price">$—</div>
-<ul>
-<li>Profit Target: 8%</li>
-<li>Daily Loss: 5%</li>
-<li>Max Drawdown: 10%</li>
-<li>Demo Account</li>
-</ul>
-<button onclick="loginPage()">Start Demo</button>
-</div>
-
-<div class="card">
-<h2>$10K Challenge</h2>
-<div class="price">$—</div>
-<ul>
-<li>Profit Target: 8%</li>
-<li>Daily Loss: 5%</li>
-<li>Max Drawdown: 10%</li>
-<li>Demo Account</li>
-</ul>
-<button onclick="loginPage()">Start Demo</button>
-</div>
-
-<div class="card">
-<h2>$25K Challenge</h2>
-<div class="price">$—</div>
-<ul>
-<li>Profit Target: 8%</li>
-<li>Daily Loss: 5%</li>
-<li>Max Drawdown: 10%</li>
-<li>Demo Account</li>
-</ul>
-<button onclick="loginPage()">Start Demo</button>
-</div>
-
-</div>
-</section>
-
-<section id="login" class="login hidden">
-<div class="card">
-<h2>Trader Login</h2>
-<p class="muted">Demo login only.</p>
+<h2>NovaFund Login</h2>
+<p>Demo prototype</p>
 <input placeholder="Email">
 <input type="password" placeholder="Password">
-<button onclick="dashboard()">Login</button>
+<button onclick="trader()">Trader Login</button>
+<br><br>
+<button onclick="admin()">Admin Demo</button>
 </div>
 </section>
 
-<section id="dashboard" class="hidden">
+<section id="trader" class="hidden">
+
 <span class="badge">ACTIVE • DEMO</span>
 <h1>Trader Dashboard</h1>
-<p class="muted">Account: $5,000 Challenge</p>
+<p>Account: $5,000 Challenge</p>
 
 <div class="grid">
 
 <div class="card">
 Balance
-<div class="stat">$5,240</div>
+<div class="value">$5,240</div>
 </div>
 
 <div class="card">
 Equity
-<div class="stat">$5,215</div>
+<div class="value">$5,215</div>
 </div>
 
 <div class="card">
 Profit
-<div class="stat" style="color:#46e6a5">+$240</div>
+<div class="value green">+$240</div>
 </div>
 
 <div class="card">
 Profit Target
-<div class="stat">8%</div>
-<div class="bar"><div class="fill"></div></div>
+<div class="value">8%</div>
 </div>
 
 <div class="card">
 Daily Loss
-<div class="stat">1.2%</div>
-<p class="muted">Limit: 5%</p>
+<div class="value">1.2%</div>
+<p>Limit: 5%</p>
 </div>
 
 <div class="card">
 Max Drawdown
-<div class="stat">2.1%</div>
-<p class="muted">Limit: 10%</p>
+<div class="value">2.1%</div>
+<p>Limit: 10%</p>
 </div>
 
 </div>
@@ -168,32 +94,114 @@ Max Drawdown
 
 <div class="card">
 <h2>Recent Trades</h2>
-<p>XAUUSD — BUY — <b style="color:#46e6a5">+$85</b></p>
-<p>EURUSD — SELL — <b style="color:#46e6a5">+$55</b></p>
-<p>GBPUSD — BUY — <b style="color:#ff5b5b">-$20</b></p>
+<p>XAUUSD — BUY — <b class="green">+$85</b></p>
+<p>EURUSD — SELL — <b class="green">+$55</b></p>
+<p>GBPUSD — BUY — <b class="red">-$20</b></p>
 </div>
+
+</section>
+
+<section id="admin" class="hidden">
+
+<span class="badge">ADMIN • DEMO</span>
+<h1>Admin Dashboard</h1>
+
+<div class="grid">
+
+<div class="card">
+Total Traders
+<div class="value">128</div>
+</div>
+
+<div class="card">
+Active Accounts
+<div class="value">94</div>
+</div>
+
+<div class="card">
+Demo Profit
+<div class="value green">$18,450</div>
+</div>
+
+<div class="card">
+Risk Violations
+<div class="value red">7</div>
+</div>
+
+</div>
+
+<br>
+
+<div class="card">
+<h2>Trader Accounts</h2>
+
+<table>
+<tr>
+<th>Trader</th>
+<th>Account</th>
+<th>Profit</th>
+<th>Risk</th>
+<th>Status</th>
+</tr>
+
+<tr>
+<td>Trader001</td>
+<td>$5K</td>
+<td class="green">+$420</td>
+<td>Low</td>
+<td>PASS</td>
+</tr>
+
+<tr>
+<td>Trader002</td>
+<td>$10K</td>
+<td class="green">+$710</td>
+<td>Medium</td>
+<td>ACTIVE</td>
+</tr>
+
+<tr>
+<td>Trader003</td>
+<td>$5K</td>
+<td class="red">-$530</td>
+<td>High</td>
+<td>FAIL</td>
+</tr>
+
+</table>
+</div>
+
+<br>
+
+<div class="card">
+<h2>Demo Payout Requests</h2>
+<p>Trader001 — $210 — <b class="green">Pending</b></p>
+<p>Trader007 — $350 — <b class="green">Pending</b></p>
+<p>Trader012 — $180 — <b class="green">Pending</b></p>
+</div>
+
 </section>
 
 </div>
 
-<footer>
-NovaFund © 2026 • Prototype / Simulated Trading
-</footer>
-
 <script>
-function hide(){
-document.getElementById("home").className="hidden";
-document.getElementById("plans").className="hidden";
+
+function hideAll(){
 document.getElementById("login").className="login hidden";
-document.getElementById("dashboard").className="hidden";
+document.getElementById("trader").className="hidden";
+document.getElementById("admin").className="hidden";
 }
 
-function home(){hide();document.getElementById("home").className=""}
-function plans(){hide();document.getElementById("plans").className=""}
-function loginPage(){hide();document.getElementById("login").className="login"}
-function dashboard(){hide();document.getElementById("dashboard").className=""}
+function trader(){
+hideAll();
+document.getElementById("trader").className="";
+}
 
-home();
+function admin(){
+hideAll();
+document.getElementById("admin").className="";
+}
+
 </script>
 
 </body>
