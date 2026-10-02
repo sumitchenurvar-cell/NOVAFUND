@@ -16,7 +16,7 @@ body{
 }
 
 .wrap{
-  max-width:520px;
+  max-width:540px;
   margin:auto;
   padding:22px;
 }
@@ -111,13 +111,6 @@ button{
   color:#ff6262;
 }
 
-.trade{
-  background:#102034;
-  border-radius:10px;
-  padding:13px;
-  margin:8px 0;
-}
-
 .badge{
   display:inline-block;
   background:#14382f;
@@ -127,9 +120,44 @@ button{
   font-size:12px;
 }
 
+.trade{
+  background:#102034;
+  border-radius:10px;
+  padding:13px;
+  margin:8px 0;
+}
+
 .small{
   color:#8fa4b9;
   font-size:12px;
+  margin-top:6px;
+}
+
+.progress{
+  width:100%;
+  height:14px;
+  background:#17283b;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.progressBar{
+  height:100%;
+  width:0%;
+  background:#46e6a5;
+  transition:.3s;
+}
+
+.progressText{
+  text-align:center;
+  margin-top:8px;
+  color:#aebed0;
+}
+
+.statTitle{
+  color:#8fa4b9;
+  font-size:13px;
 }
 </style>
 </head>
@@ -140,6 +168,7 @@ button{
 
 <div class="logo">NovaFund</div>
 
+
 <!-- AUTH -->
 
 <div id="auth" class="card">
@@ -147,15 +176,15 @@ button{
 <h2>Trader Account</h2>
 
 <input
-  id="email"
-  type="email"
-  placeholder="Email address"
+id="email"
+type="email"
+placeholder="Email address"
 >
 
 <input
-  id="password"
-  type="password"
-  placeholder="Password"
+id="password"
+type="password"
+placeholder="Password"
 >
 
 <button onclick="login()">Login</button>
@@ -182,38 +211,88 @@ Create Account
 <p>Account: <b>$5,000 Challenge</b></p>
 
 
-<!-- STATS -->
+<!-- ACCOUNT STATS -->
 
 <div class="grid">
 
 <div class="stat">
-Balance
+<div class="statTitle">Balance</div>
 <div id="balance" class="big">$5,000</div>
 </div>
 
 <div class="stat">
-Equity
+<div class="statTitle">Equity</div>
 <div id="equity" class="big">$5,000</div>
 </div>
 
 <div class="stat">
-Profit
+<div class="statTitle">Profit</div>
 <div id="profit" class="big green">+$0</div>
 </div>
 
 <div class="stat">
-Profit Target
+<div class="statTitle">Profit Target</div>
 <div id="target" class="big">8%</div>
 </div>
 
 <div class="stat">
-Daily Loss
+<div class="statTitle">Daily Loss</div>
 <div id="dailyLoss" class="big">0%</div>
 </div>
 
 <div class="stat">
-Max Drawdown
+<div class="statTitle">Max Drawdown</div>
 <div id="drawdown" class="big">0%</div>
+</div>
+
+</div>
+
+
+<!-- PROFIT TARGET -->
+
+<div class="card">
+
+<h3>🎯 Profit Target</h3>
+
+<div class="progress">
+<div id="progressBar" class="progressBar"></div>
+</div>
+
+<div id="progressText" class="progressText">
+0% / 8%
+</div>
+
+</div>
+
+
+<!-- TRADING STATISTICS -->
+
+<div class="card">
+
+<h3>📊 Trading Statistics</h3>
+
+<div class="grid">
+
+<div class="stat">
+<div class="statTitle">Total Trades</div>
+<div id="totalTrades" class="big">0</div>
+</div>
+
+<div class="stat">
+<div class="statTitle">Winning Trades</div>
+<div id="winningTrades" class="big green">0</div>
+</div>
+
+<div class="stat">
+<div class="statTitle">Losing Trades</div>
+<div id="losingTrades" class="big red">0</div>
+</div>
+
+<div class="stat">
+<div class="statTitle">Win Rate</div>
+<div id="winRate" class="big">0%</div>
+</div>
+
 </div>
 
 </div>
@@ -239,25 +318,25 @@ Max Drawdown
 </select>
 
 <input
-  id="entry"
-  type="number"
-  step="any"
-  placeholder="Entry Price"
+id="entry"
+type="number"
+step="any"
+placeholder="Entry Price"
 >
 
 <input
-  id="exit"
-  type="number"
-  step="any"
-  placeholder="Exit Price"
+id="exit"
+type="number"
+step="any"
+placeholder="Exit Price"
 >
 
 <input
-  id="quantity"
-  type="number"
-  step="any"
-  placeholder="Quantity / Lot"
-  value="1"
+id="quantity"
+type="number"
+step="any"
+placeholder="Quantity / Lot"
+value="1"
 >
 
 <select id="resultType">
@@ -267,11 +346,11 @@ Max Drawdown
 </select>
 
 <input
-  id="manualPL"
-  type="number"
-  step="any"
-  placeholder="Manual P/L ($)"
-  style="display:none"
+id="manualPL"
+type="number"
+step="any"
+placeholder="Manual P/L ($)"
+style="display:none"
 >
 
 <button onclick="addTrade()">
@@ -287,7 +366,7 @@ Save Trade
 
 <div class="card">
 
-<h3>Recent Trades</h3>
+<h3>📋 Recent Trades</h3>
 
 <div id="trades">
 No trades yet.
@@ -308,12 +387,8 @@ Logout
 <script type="module">
 
 import {createClient}
-from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
 
-
-/* =========================
-   SUPABASE
-========================= */
 
 const SUPABASE_URL =
 "https://fbtltoldqbegahrhrhzv.supabase.co";
@@ -323,14 +398,10 @@ const SUPABASE_PUBLISHABLE_KEY =
 
 const supabase =
 createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
+SUPABASE_URL,
+SUPABASE_PUBLISHABLE_KEY
 );
 
-
-/* =========================
-   ELEMENTS
-========================= */
 
 const auth =
 document.getElementById("auth");
@@ -348,7 +419,7 @@ let currentUser = null;
 
 
 /* =========================
-   LOGIN
+LOGIN
 ========================= */
 
 window.login = async function(){
@@ -374,10 +445,8 @@ authMsg.innerText =
 
 const {data,error} =
 await supabase.auth.signInWithPassword({
-
 email,
 password
-
 });
 
 
@@ -399,7 +468,7 @@ await showDashboard();
 
 
 /* =========================
-   SIGNUP
+SIGNUP
 ========================= */
 
 window.signup = async function(){
@@ -474,7 +543,7 @@ authMsg.innerText =
 
 
 /* =========================
-   SHOW DASHBOARD
+SHOW DASHBOARD
 ========================= */
 
 async function showDashboard(){
@@ -494,7 +563,7 @@ await loadTrades();
 
 
 /* =========================
-   ACCOUNT
+LOAD ACCOUNT
 ========================= */
 
 async function loadAccount(){
@@ -517,26 +586,17 @@ return;
 }
 
 
-/* Create account if missing */
-
 if(!data){
 
 const newAccount = {
 
 user_id:currentUser.id,
-
 account_size:5000,
-
 balance:5000,
-
 equity:5000,
-
 profit:0,
-
 profit_target:8,
-
 daily_loss:0,
-
 max_drawdown:0
 
 };
@@ -571,14 +631,22 @@ updateDashboard(data);
 
 
 /* =========================
-   UPDATE DASHBOARD
+UPDATE DASHBOARD
 ========================= */
 
 function updateDashboard(data){
 
+const balance =
+Number(data.balance);
+
+const equity =
+Number(data.equity);
+
+const profit =
+Number(data.profit);
+
 document.getElementById("balance").innerText =
-"$" +
-Number(data.balance).toLocaleString(
+"$" + balance.toLocaleString(
 "en-US",
 {
 minimumFractionDigits:2,
@@ -587,8 +655,7 @@ maximumFractionDigits:2
 );
 
 document.getElementById("equity").innerText =
-"$" +
-Number(data.equity).toLocaleString(
+"$" + equity.toLocaleString(
 "en-US",
 {
 minimumFractionDigits:2,
@@ -596,15 +663,12 @@ maximumFractionDigits:2
 }
 );
 
-const profit =
-Number(data.profit);
 
 const profitElement =
 document.getElementById("profit");
 
 profitElement.innerText =
-(profit >= 0 ? "+$" : "-$")
-+
+(profit >= 0 ? "+$" : "-$") +
 Math.abs(profit).toLocaleString(
 "en-US",
 {
@@ -617,20 +681,53 @@ profitElement.className =
 "big " +
 (profit >= 0 ? "green" : "red");
 
+
 document.getElementById("target").innerText =
 Number(data.profit_target) + "%";
 
 document.getElementById("dailyLoss").innerText =
-Number(data.daily_loss) + "%";
+Number(data.daily_loss).toFixed(2) + "%";
 
 document.getElementById("drawdown").innerText =
-Number(data.max_drawdown) + "%";
+Number(data.max_drawdown).toFixed(2) + "%";
+
+
+/* Profit target progress */
+
+const targetPercent =
+Number(data.profit_target);
+
+const accountSize =
+Number(data.account_size);
+
+let currentPercent =
+(profit / accountSize) * 100;
+
+if(currentPercent < 0){
+currentPercent = 0;
+}
+
+let progress =
+(currentPercent / targetPercent) * 100;
+
+if(progress > 100){
+progress = 100;
+}
+
+document.getElementById("progressBar").style.width =
+progress + "%";
+
+document.getElementById("progressText").innerText =
+currentPercent.toFixed(2)
++ "% / "
++ targetPercent
++ "%";
 
 }
 
 
 /* =========================
-   RESULT TYPE
+RESULT TYPE
 ========================= */
 
 document
@@ -658,13 +755,14 @@ manual.style.display =
 
 
 /* =========================
-   CALCULATE P/L
+CALCULATE P/L
 ========================= */
 
 function calculatePL(){
 
 const type =
 document.getElementById("resultType").value;
+
 
 if(type !== "auto"){
 
@@ -712,19 +810,6 @@ return null;
 }
 
 
-/*
- Simple demo P/L calculation.
-
- BUY:
- Exit - Entry
-
- SELL:
- Entry - Exit
-
- This is NOT broker-specific tick/contract
- calculation.
-*/
-
 let difference;
 
 if(side === "BUY"){
@@ -741,11 +826,8 @@ entry - exit;
 
 
 /*
- Demo multiplier.
-
- It keeps the dashboard easy to test.
- Real broker contract specifications
- are different.
+Demo multiplier.
+This is NOT a real broker contract-size calculation.
 */
 
 const multiplier = 100;
@@ -758,7 +840,7 @@ multiplier;
 
 
 /* =========================
-   ADD TRADE
+ADD TRADE
 ========================= */
 
 window.addTrade = async function(){
@@ -773,7 +855,6 @@ document.getElementById("symbol").value;
 const side =
 document.getElementById("side").value;
 
-
 const entry =
 Number(
 document.getElementById("entry").value
@@ -782,6 +863,368 @@ document.getElementById("entry").value
 const exit =
 Number(
 document.getElementById("exit").value
+);
+
+const quantity =
+Number(
+document.getElementById("quantity").value
+);
+
+
+const pl =
+calculatePL();
+
+
+if(pl === null){
+
+tradeMsg.innerText =
+"Trade details complete bharo.";
+
+return;
+
+}
+
+
+const {data:account,error:accountError} =
+await supabase
+.from("trader_accounts")
+.select("*")
+.eq("user_id",currentUser.id)
+.single();
+
+
+if(accountError){
+
+tradeMsg.innerText =
+accountError.message;
+
+return;
+
+}
+
+
+const oldBalance =
+Number(account.balance);
+
+const newBalance =
+oldBalance + pl;
+
+const newEquity =
+newBalance;
+
+const newProfit =
+Number(account.profit) + pl;
+
+
+/* Drawdown */
+
+let drawdown = 0;
+
+if(newProfit < 0){
+
+drawdown =
+Math.abs(newProfit) /
+Number(account.account_size) *
+100;
+
+}
+
+
+/* Daily loss */
+
+let dailyLoss =
+Number(account.daily_loss);
+
+if(pl < 0){
+
+dailyLoss +=
+Math.abs(pl) /
+Number(account.account_size) *
+100;
+
+}
+
+
+const {error:updateError} =
+await supabase
+.from("trader_accounts")
+.update({
+
+balance:newBalance,
+equity:newEquity,
+profit:newProfit,
+daily_loss:dailyLoss,
+max_drawdown:drawdown
+
+})
+.eq("user_id",currentUser.id);
+
+
+if(updateError){
+
+tradeMsg.innerText =
+updateError.message;
+
+return;
+
+}
+
+
+/* Save trade */
+
+const {error:tradeError} =
+await supabase
+.from("trader_trades")
+.insert({
+
+user_id:currentUser.id,
+symbol:symbol,
+side:side,
+entry_price:entry,
+exit_price:exit,
+quantity:quantity,
+profit_loss:pl
+
+});
+
+
+if(tradeError){
+
+tradeMsg.innerText =
+tradeError.message;
+
+return;
+
+}
+
+
+tradeMsg.innerText =
+"Trade successfully saved!";
+
+
+document.getElementById("entry").value =
+"";
+
+document.getElementById("exit").value =
+"";
+
+document.getElementById("manualPL").value =
+"";
+
+
+await loadAccount();
+
+await loadTrades();
+
+};
+
+
+/* =========================
+LOAD TRADES
+========================= */
+
+async function loadTrades(){
+
+const {data,error} =
+await supabase
+.from("trader_trades")
+.select("*")
+.eq("user_id",currentUser.id)
+.order("created_at",{ascending:false})
+.limit(50);
+
+
+if(error){
+
+document.getElementById("trades").innerText =
+error.message;
+
+return;
+
+}
+
+
+const container =
+document.getElementById("trades");
+
+
+if(!data || data.length === 0){
+
+container.innerText =
+"No trades yet.";
+
+updateTradingStats([]);
+
+return;
+
+}
+
+
+container.innerHTML =
+"";
+
+
+data.forEach(trade => {
+
+const div =
+document.createElement("div");
+
+div.className =
+"trade";
+
+
+const pl =
+Number(trade.profit_loss);
+
+const color =
+pl >= 0 ? "green" : "red";
+
+const sign =
+pl >= 0 ? "+$" : "-$";
+
+
+div.innerHTML =
+
+"<b>" +
+trade.symbol +
+"</b> — " +
+trade.side +
+
+"<br>" +
+
+"<span class='" +
+color +
+"'>" +
+sign +
+Math.abs(pl).toFixed(2) +
+"</span>" +
+
+"<div class='small'>" +
+
+"Entry: " +
+trade.entry_price +
+
+" | Exit: " +
+trade.exit_price +
+
+" | Qty: " +
+trade.quantity +
+
+"</div>";
+
+container.appendChild(div);
+
+});
+
+
+updateTradingStats(data);
+
+}
+
+
+/* =========================
+TRADING STATISTICS
+========================= */
+
+function updateTradingStats(trades){
+
+const total =
+trades.length;
+
+const winning =
+trades.filter(
+t => Number(t.profit_loss) > 0
+).length;
+
+const losing =
+trades.filter(
+t => Number(t.profit_loss) < 0
+).length;
+
+let winRate = 0;
+
+if(total > 0){
+
+winRate =
+(winning / total) * 100;
+
+}
+
+
+document.getElementById("totalTrades").innerText =
+total;
+
+document.getElementById("winningTrades").innerText =
+winning;
+
+document.getElementById("losingTrades").innerText =
+losing;
+
+document.getElementById("winRate").innerText =
+winRate.toFixed(1) + "%";
+
+}
+
+
+/* =========================
+LOGOUT
+========================= */
+
+window.logout = async function(){
+
+await supabase.auth.signOut();
+
+currentUser =
+null;
+
+dashboard.classList.add("hidden");
+
+auth.classList.remove("hidden");
+
+authMsg.innerText =
+"Logout successful.";
+
+};
+
+
+/* =========================
+EXISTING SESSION
+========================= */
+
+const {
+data:{session}
+} =
+await supabase.auth.getSession();
+
+
+if(session){
+
+currentUser =
+session.user;
+
+await showDashboard();
+
+}
+
+
+supabase.auth.onAuthStateChange(
+async (event,session)=>{
+
+if(session && !currentUser){
+
+currentUser =
+session.user;
+
+await showDashboard();
+
+}
+
+});
+
+</script>
+
+</body>
+</html>"exit").value
 );
 
 const quantity =
