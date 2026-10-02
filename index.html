@@ -7,388 +7,251 @@
 
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;
- background:#07111f;
- color:#fff;
- font-family:Arial,sans-serif
-}
-.wrap{
- max-width:480px;
- margin:auto;
- padding:25px
-}
-.logo{
- text-align:center;
- color:#46e6a5;
- font-size:30px;
- font-weight:800;
- margin:25px 0
-}
-.card{
- background:#0d1a2b;
- border:1px solid #29415d;
- border-radius:16px;
- padding:22px;
- margin-top:18px
-}
-input{
- width:100%;
- padding:13px;
- margin:7px 0;
- border-radius:8px;
- border:1px solid #29415d;
- background:#091625;
- color:#fff
-}
-button{
- width:100%;
- padding:13px;
- margin-top:9px;
- border:0;
- border-radius:8px;
- background:#46e6a5;
- color:#061018;
- font-weight:bold;
- cursor:pointer
-}
-.secondary{
- background:#20354d;
- color:#fff
-}
+body{margin:0;background:#07111f;color:#fff;font-family:Arial,sans-serif}
+.wrap{max-width:480px;margin:auto;padding:25px}
+.logo{text-align:center;color:#46e6a5;font-size:30px;font-weight:800;margin:25px 0}
+.card{background:#0d1a2b;border:1px solid #29415d;border-radius:16px;padding:22px;margin-top:18px}
+input{width:100%;padding:13px;margin:7px 0;border-radius:8px;border:1px solid #29415d;background:#091625;color:#fff}
+.passwordBox{position:relative}
+.passwordBox input{padding-right:55px}
+.eye{position:absolute;right:8px;top:8px;width:42px;padding:10px;background:#20354d;color:#fff}
+button{width:100%;padding:13px;margin-top:9px;border:0;border-radius:8px;background:#46e6a5;color:#061018;font-weight:bold;cursor:pointer}
+.secondary{background:#20354d;color:#fff}
 .hidden{display:none}
-.msg{
- margin-top:14px;
- color:#aebed0;
- line-height:1.5
-}
+.msg{margin-top:14px;color:#aebed0;line-height:1.5}
+.stat{background:#102034;border-radius:12px;padding:16px;margin:10px 0}
+.big{font-size:26px;font-weight:bold;margin-top:6px}
 .green{color:#46e6a5}
 .red{color:#ff6262}
-.stat{
- background:#102034;
- border-radius:12px;
- padding:16px;
- margin:10px 0
-}
-.big{
- font-size:26px;
- font-weight:bold;
- margin-top:6px
-}
-.badge{
- display:inline-block;
- background:#14382f;
- color:#65efb5;
- padding:6px 10px;
- border-radius:20px;
- font-size:12px
-}
+.badge{display:inline-block;background:#14382f;color:#65efb5;padding:6px 10px;border-radius:20px;font-size:12px}
+.link{background:none;color:#46e6a5;padding:5px;text-decoration:underline}
 </style>
 </head>
 
 <body>
-
 <div class="wrap">
 
 <div class="logo">NovaFund</div>
 
-<!-- AUTH -->
 <div id="auth" class="card">
 
-<h2 id="authTitle">Create Trader Account</h2>
+<h2>Trader Account</h2>
 
-<input
- id="email"
- type="email"
- placeholder="Email address">
+<input id="email" type="email" placeholder="Email address">
 
-<input
- id="password"
- type="password"
- placeholder="Password">
+<div class="passwordBox">
+<input id="password" type="password" placeholder="Password">
+<button class="eye" type="button" onclick="togglePassword()">👁️</button>
+</div>
 
-<button onclick="signup()">
-Create Account
-</button>
+<button onclick="login()">Login</button>
 
-<button class="secondary" onclick="login()">
-Login
-</button>
+<button class="secondary" onclick="signup()">Create Account</button>
 
-<button class="secondary" onclick="resend()">
-Resend Confirmation Email
-</button>
+<button class="link" onclick="forgotPassword()">Forgot Password?</button>
+
+<button class="secondary" onclick="resend()">Resend Confirmation Email</button>
 
 <div id="msg" class="msg"></div>
-
 </div>
 
 
-<!-- DASHBOARD -->
 <div id="dashboard" class="hidden">
 
 <span class="badge">ACTIVE • DEMO</span>
 
 <h2>Trader Dashboard</h2>
 
-<p>
-Account:
-<b>$5,000 Challenge</b>
-</p>
+<p>Account: <b>$5,000 Challenge</b></p>
 
-<div class="stat">
-Balance
-<div class="big">$5,000</div>
-</div>
-
-<div class="stat">
-Equity
-<div class="big">$5,000</div>
-</div>
-
-<div class="stat">
-Profit
-<div class="big green">+$0</div>
-</div>
-
-<div class="stat">
-Profit Target
-<div class="big">8%</div>
-</div>
-
-<div class="stat">
-Daily Loss
-<div class="big">0%</div>
-</div>
-
-<div class="stat">
-Max Drawdown
-<div class="big">0%</div>
-</div>
+<div class="stat">Balance<div class="big">$5,000</div></div>
+<div class="stat">Equity<div class="big">$5,000</div></div>
+<div class="stat">Profit<div class="big green">+$0</div></div>
+<div class="stat">Profit Target<div class="big">8%</div></div>
+<div class="stat">Daily Loss<div class="big">0%</div></div>
+<div class="stat">Max Drawdown<div class="big">0%</div></div>
 
 <div class="card">
 <h3>Recent Trades</h3>
-
-<p>
-XAUUSD — BUY —
-<span class="green">+$0</span>
-</p>
-
-<p>
-EURUSD — SELL —
-<span class="green">+$0</span>
-</p>
-
-<p>
-GBPUSD — BUY —
-<span class="red">$0</span>
-</p>
-
+<p>XAUUSD — BUY — <span class="green">+$0</span></p>
+<p>EURUSD — SELL — <span class="green">+$0</span></p>
+<p>GBPUSD — BUY — <span class="red">$0</span></p>
 </div>
 
-<button onclick="logout()">
-Logout
-</button>
+<button onclick="logout()">Logout</button>
 
 </div>
-
 </div>
 
 
 <script type="module">
 
-import {
- createClient
-}
-from
-"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-
+import {createClient}
+from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
 const SUPABASE_URL =
 "https://fbtltoldqbegahrhrhzv.supabase.co";
 
-
 const SUPABASE_PUBLISHABLE_KEY =
 "sb_publishable_gEWtMDiKIs03V-DeSMy0Kg_GyB73tt5";
 
-
 const supabase =
-createClient(
-SUPABASE_URL,
-SUPABASE_PUBLISHABLE_KEY
-);
+createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 
+const redirectURL =
+"https://sumitchenurvar-cell.github.io/NOVAFUND/";
 
-const msg =
-document.getElementById("msg");
+const msg=document.getElementById("msg");
 
-
-function showMessage(text){
- msg.innerText=text;
+function message(text){
+msg.innerText=text;
 }
 
-
-window.signup = async function(){
-
- const email =
- document.getElementById("email").value.trim();
-
- const password =
- document.getElementById("password").value;
-
- if(!email || !password){
-  showMessage("Email aur password bharo.");
-  return;
- }
-
- if(password.length < 6){
-  showMessage("Password kam se kam 6 characters ka hona chahiye.");
-  return;
- }
-
- showMessage("Account create ho raha hai...");
-
- const {data,error} =
- await supabase.auth.signUp({
-  email:email,
-  password:password,
-  options:{
-   emailRedirectTo:
-   "https://sumitchenurvar-cell.github.io/NOVAFUND/"
-  }
- });
-
- if(error){
-  showMessage(error.message);
-  return;
- }
-
- if(data.session){
-  showDashboard();
- }else{
-  showMessage(
-   "Account created! Email check karo aur latest confirmation link kholo."
-  );
- }
-
+window.togglePassword=function(){
+const p=document.getElementById("password");
+p.type=p.type==="password"?"text":"password";
 };
 
 
-window.resend = async function(){
+window.signup=async function(){
 
- const email =
- document.getElementById("email").value.trim();
+const email=document.getElementById("email").value.trim();
+const password=document.getElementById("password").value;
 
- if(!email){
-  showMessage("Pehle email enter karo.");
-  return;
- }
+if(!email||!password){
+message("Email aur password bharo.");
+return;
+}
 
- showMessage("Confirmation email bhej rahe hain...");
+message("Account create ho raha hai...");
 
- const {error} =
- await supabase.auth.resend({
-  type:"signup",
-  email:email,
-  options:{
-   emailRedirectTo:
-   "https://sumitchenurvar-cell.github.io/NOVAFUND/"
-  }
- });
+const {data,error}=await supabase.auth.signUp({
+email,
+password,
+options:{emailRedirectTo:redirectURL}
+});
 
- if(error){
-  showMessage(error.message);
- }else{
-  showMessage(
-   "Naya confirmation email bhej diya gaya hai. Latest email ka link kholo."
-  );
- }
+if(error){
+message(error.message);
+return;
+}
 
+if(data.session){
+showDashboard();
+}else{
+message("Account created! Email confirm karke Login karo.");
+}
 };
 
 
-window.login = async function(){
+window.login=async function(){
 
- const email =
- document.getElementById("email").value.trim();
+const email=document.getElementById("email").value.trim();
+const password=document.getElementById("password").value;
 
- const password =
- document.getElementById("password").value;
+if(!email||!password){
+message("Email aur password bharo.");
+return;
+}
 
- if(!email || !password){
-  showMessage("Email aur password bharo.");
-  return;
- }
+message("Login ho raha hai...");
 
- showMessage("Login ho raha hai...");
+const {data,error}=await supabase.auth.signInWithPassword({
+email,
+password
+});
 
- const {data,error} =
- await supabase.auth.signInWithPassword({
-  email:email,
-  password:password
- });
+if(error){
+message(error.message);
+return;
+}
 
- if(error){
-  showMessage(error.message);
-  return;
- }
-
- showDashboard();
-
+showDashboard();
 };
 
 
-window.logout = async function(){
+window.resend=async function(){
 
- await supabase.auth.signOut();
+const email=document.getElementById("email").value.trim();
 
- document
- .getElementById("dashboard")
- .classList.add("hidden");
+if(!email){
+message("Pehle email enter karo.");
+return;
+}
 
- document
- .getElementById("auth")
- .classList.remove("hidden");
+message("Confirmation email bhej rahe hain...");
 
- showMessage("Logout successful.");
+const {error}=await supabase.auth.resend({
+type:"signup",
+email,
+options:{emailRedirectTo:redirectURL}
+});
 
+if(error){
+message(error.message);
+}else{
+message("Naya confirmation email bhej diya gaya hai.");
+}
+};
+
+
+window.forgotPassword=async function(){
+
+const email=document.getElementById("email").value.trim();
+
+if(!email){
+message("Pehle apna email enter karo.");
+return;
+}
+
+message("Password reset email bhej rahe hain...");
+
+const {error}=await supabase.auth.resetPasswordForEmail(
+email,
+{redirectTo:redirectURL}
+);
+
+if(error){
+message(error.message);
+}else{
+message("Password reset email bhej diya gaya hai. Gmail/Spam check karo.");
+}
+};
+
+
+window.logout=async function(){
+
+await supabase.auth.signOut();
+
+document.getElementById("dashboard").classList.add("hidden");
+document.getElementById("auth").classList.remove("hidden");
+
+message("Logout successful.");
 };
 
 
 function showDashboard(){
 
- document
- .getElementById("auth")
- .classList.add("hidden");
-
- document
- .getElementById("dashboard")
- .classList.remove("hidden");
+document.getElementById("auth").classList.add("hidden");
+document.getElementById("dashboard").classList.remove("hidden");
 
 }
 
 
-const {
- data:{session}
-} =
-await supabase.auth.getSession();
-
+const {data:{session}}=await supabase.auth.getSession();
 
 if(session){
- showDashboard();
+showDashboard();
 }
 
+supabase.auth.onAuthStateChange((event,session)=>{
 
-supabase.auth.onAuthStateChange(
-(event,session)=>{
-
- if(session){
-  showDashboard();
- }
+if(session){
+showDashboard();
+}
 
 });
 
 </script>
-
 </body>
 </html>
