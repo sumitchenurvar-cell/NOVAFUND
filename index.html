@@ -1,44 +1,140 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NovaFund | Login</title>
+<title>NovaFund</title>
+
 <style>
-body{margin:0;background:#07111f;color:white;font-family:Arial}
-.wrap{max-width:420px;margin:70px auto;padding:20px}
-.logo{font-size:30px;font-weight:bold;color:#46e6a5;text-align:center}
-.card{background:#0d1a2b;border:1px solid #29415d;border-radius:16px;padding:25px;margin-top:25px}
-input{width:100%;padding:13px;margin:8px 0;box-sizing:border-box;background:#091625;color:white;border:1px solid #29415d;border-radius:8px}
-button{width:100%;padding:13px;margin-top:8px;border:0;border-radius:8px;background:#46e6a5;color:#061018;font-weight:bold}
-.secondary{background:#20354d;color:white}
-#dashboard{display:none}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#07111f;
+ color:#fff;
+ font-family:Arial,sans-serif
+}
+.wrap{
+ max-width:480px;
+ margin:auto;
+ padding:25px
+}
+.logo{
+ text-align:center;
+ color:#46e6a5;
+ font-size:30px;
+ font-weight:800;
+ margin:25px 0
+}
+.card{
+ background:#0d1a2b;
+ border:1px solid #29415d;
+ border-radius:16px;
+ padding:22px;
+ margin-top:18px
+}
+input{
+ width:100%;
+ padding:13px;
+ margin:7px 0;
+ border-radius:8px;
+ border:1px solid #29415d;
+ background:#091625;
+ color:#fff
+}
+button{
+ width:100%;
+ padding:13px;
+ margin-top:9px;
+ border:0;
+ border-radius:8px;
+ background:#46e6a5;
+ color:#061018;
+ font-weight:bold;
+ cursor:pointer
+}
+.secondary{
+ background:#20354d;
+ color:#fff
+}
+.hidden{display:none}
+.msg{
+ margin-top:14px;
+ color:#aebed0;
+ line-height:1.5
+}
 .green{color:#46e6a5}
-.stat{background:#0d1a2b;border:1px solid #29415d;border-radius:12px;padding:18px;margin:10px 0}
-.big{font-size:25px;font-weight:bold}
-.msg{margin-top:12px;color:#9eafc4}
+.red{color:#ff6262}
+.stat{
+ background:#102034;
+ border-radius:12px;
+ padding:16px;
+ margin:10px 0
+}
+.big{
+ font-size:26px;
+ font-weight:bold;
+ margin-top:6px
+}
+.badge{
+ display:inline-block;
+ background:#14382f;
+ color:#65efb5;
+ padding:6px 10px;
+ border-radius:20px;
+ font-size:12px
+}
 </style>
 </head>
 
 <body>
 
 <div class="wrap">
+
 <div class="logo">NovaFund</div>
 
+<!-- AUTH -->
 <div id="auth" class="card">
-<h2 id="title">Create Trader Account</h2>
 
-<input id="email" type="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
+<h2 id="authTitle">Create Trader Account</h2>
 
-<button onclick="signup()">Create Account</button>
-<button class="secondary" onclick="login()">Login</button>
+<input
+ id="email"
+ type="email"
+ placeholder="Email address">
+
+<input
+ id="password"
+ type="password"
+ placeholder="Password">
+
+<button onclick="signup()">
+Create Account
+</button>
+
+<button class="secondary" onclick="login()">
+Login
+</button>
+
+<button class="secondary" onclick="resend()">
+Resend Confirmation Email
+</button>
 
 <div id="msg" class="msg"></div>
+
 </div>
 
-<div id="dashboard">
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden">
+
+<span class="badge">ACTIVE • DEMO</span>
+
 <h2>Trader Dashboard</h2>
-<p>Account: <b>$5,000 Challenge</b></p>
+
+<p>
+Account:
+<b>$5,000 Challenge</b>
+</p>
 
 <div class="stat">
 Balance
@@ -46,8 +142,18 @@ Balance
 </div>
 
 <div class="stat">
+Equity
+<div class="big">$5,000</div>
+</div>
+
+<div class="stat">
 Profit
-<div class="big green">$0</div>
+<div class="big green">+$0</div>
+</div>
+
+<div class="stat">
+Profit Target
+<div class="big">8%</div>
 </div>
 
 <div class="stat">
@@ -60,87 +166,227 @@ Max Drawdown
 <div class="big">0%</div>
 </div>
 
-<button onclick="logout()">Logout</button>
+<div class="card">
+<h3>Recent Trades</h3>
+
+<p>
+XAUUSD — BUY —
+<span class="green">+$0</span>
+</p>
+
+<p>
+EURUSD — SELL —
+<span class="green">+$0</span>
+</p>
+
+<p>
+GBPUSD — BUY —
+<span class="red">$0</span>
+</p>
+
 </div>
+
+<button onclick="logout()">
+Logout
+</button>
+
 </div>
+
+</div>
+
 
 <script type="module">
 
-import { createClient }
-from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+import {
+ createClient
+}
+from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
 
 const SUPABASE_URL =
 "https://fbtltoldqbegahrhrhzv.supabase.co";
 
-const SUPABASE_KEY =
+
+const SUPABASE_PUBLISHABLE_KEY =
 "sb_publishable_gEWtMDiKIs03V-DeSMy0Kg_GyB73tt5";
 
-const supabase = createClient(
+
+const supabase =
+createClient(
 SUPABASE_URL,
-SUPABASE_KEY
+SUPABASE_PUBLISHABLE_KEY
 );
+
+
+const msg =
+document.getElementById("msg");
+
+
+function showMessage(text){
+ msg.innerText=text;
+}
+
 
 window.signup = async function(){
 
-const email=document.getElementById("email").value;
-const password=document.getElementById("password").value;
+ const email =
+ document.getElementById("email").value.trim();
 
-if(!email || !password){
-document.getElementById("msg").innerText="Email aur password bharo.";
-return;
-}
+ const password =
+ document.getElementById("password").value;
 
-const {error}=await supabase.auth.signUp({
-email:email,
-password:password
-});
+ if(!email || !password){
+  showMessage("Email aur password bharo.");
+  return;
+ }
 
-if(error){
-document.getElementById("msg").innerText=error.message;
-}else{
-document.getElementById("msg").innerText=
-"Account created! Email verify karke Login karo.";
-}
+ if(password.length < 6){
+  showMessage("Password kam se kam 6 characters ka hona chahiye.");
+  return;
+ }
+
+ showMessage("Account create ho raha hai...");
+
+ const {data,error} =
+ await supabase.auth.signUp({
+  email:email,
+  password:password,
+  options:{
+   emailRedirectTo:
+   "https://sumitchenurvar-cell.github.io/NOVAFUND/"
+  }
+ });
+
+ if(error){
+  showMessage(error.message);
+  return;
+ }
+
+ if(data.session){
+  showDashboard();
+ }else{
+  showMessage(
+   "Account created! Email check karo aur latest confirmation link kholo."
+  );
+ }
+
 };
+
+
+window.resend = async function(){
+
+ const email =
+ document.getElementById("email").value.trim();
+
+ if(!email){
+  showMessage("Pehle email enter karo.");
+  return;
+ }
+
+ showMessage("Confirmation email bhej rahe hain...");
+
+ const {error} =
+ await supabase.auth.resend({
+  type:"signup",
+  email:email,
+  options:{
+   emailRedirectTo:
+   "https://sumitchenurvar-cell.github.io/NOVAFUND/"
+  }
+ });
+
+ if(error){
+  showMessage(error.message);
+ }else{
+  showMessage(
+   "Naya confirmation email bhej diya gaya hai. Latest email ka link kholo."
+  );
+ }
+
+};
+
 
 window.login = async function(){
 
-const email=document.getElementById("email").value;
-const password=document.getElementById("password").value;
+ const email =
+ document.getElementById("email").value.trim();
 
-const {error}=await supabase.auth.signInWithPassword({
-email:email,
-password:password
-});
+ const password =
+ document.getElementById("password").value;
 
-if(error){
-document.getElementById("msg").innerText=error.message;
-}else{
-showDashboard();
-}
+ if(!email || !password){
+  showMessage("Email aur password bharo.");
+  return;
+ }
+
+ showMessage("Login ho raha hai...");
+
+ const {data,error} =
+ await supabase.auth.signInWithPassword({
+  email:email,
+  password:password
+ });
+
+ if(error){
+  showMessage(error.message);
+  return;
+ }
+
+ showDashboard();
+
 };
+
 
 window.logout = async function(){
 
-await supabase.auth.signOut();
+ await supabase.auth.signOut();
 
-document.getElementById("dashboard").style.display="none";
-document.getElementById("auth").style.display="block";
+ document
+ .getElementById("dashboard")
+ .classList.add("hidden");
+
+ document
+ .getElementById("auth")
+ .classList.remove("hidden");
+
+ showMessage("Logout successful.");
+
 };
+
 
 function showDashboard(){
 
-document.getElementById("auth").style.display="none";
-document.getElementById("dashboard").style.display="block";
+ document
+ .getElementById("auth")
+ .classList.add("hidden");
+
+ document
+ .getElementById("dashboard")
+ .classList.remove("hidden");
 
 }
 
-const {data:{session}} =
+
+const {
+ data:{session}
+} =
 await supabase.auth.getSession();
 
+
 if(session){
-showDashboard();
+ showDashboard();
 }
+
+
+supabase.auth.onAuthStateChange(
+(event,session)=>{
+
+ if(session){
+  showDashboard();
+ }
+
+});
 
 </script>
 
