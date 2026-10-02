@@ -1,66 +1,61 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
-<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NovaFund — Funded Trading Prototype</title>
+<title>NovaFund Trader Dashboard</title>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#07111f;color:#eaf2ff}
-nav{padding:18px 7%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1b2a40}
-.logo{font-size:22px;font-weight:800}.logo span{color:#46e6a5}
-nav a{color:#b8c7da;text-decoration:none;margin-left:22px}
-.hero{padding:70px 7%;text-align:center;background:linear-gradient(180deg,#0b1b30,#07111f)}
-h1{font-size:46px;margin:0 0 15px}.hero p{color:#aebed2;font-size:18px}
-.btn{display:inline-block;padding:13px 22px;border-radius:10px;background:#46e6a5;color:#061018;text-decoration:none;font-weight:700;margin:10px}
-section{padding:45px 7%}h2{text-align:center}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
-.card{background:#0d1a2b;border:1px solid #20334b;border-radius:16px;padding:22px}.price{font-size:30px;font-weight:800}.muted{color:#9fb0c5}
-ul{padding-left:20px;line-height:1.8}.dashboard{max-width:1000px;margin:auto}
-.stat{font-size:26px;font-weight:800;margin-top:8px}.tag{display:inline-block;padding:5px 9px;border-radius:20px;background:#14382f;color:#65efb5;font-size:12px}
-footer{text-align:center;padding:30px;color:#75869b;border-top:1px solid #1b2a40}
+body{margin:0;background:#07111f;color:white;font-family:Arial;padding:20px}
+.logo{font-size:28px;font-weight:bold;color:#46e6a5}
+h1{font-size:32px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:15px}
+.card{background:#0d1a2b;border:1px solid #29415d;border-radius:15px;padding:20px}
+.value{font-size:27px;font-weight:bold;margin-top:8px}
+.green{color:#46e6a5}
+button{padding:13px 20px;border:0;border-radius:9px;background:#46e6a5;font-weight:bold}
+input{display:block;width:100%;padding:12px;margin:10px 0;box-sizing:border-box}
+#dashboard{display:none}
 </style>
 </head>
 <body>
-<nav><div class="logo">Nova<span>Fund</span></div><div><a href="#plans">Plans</a><a href="#rules">Rules</a><a href="#dashboard">Dashboard</a></div></nav>
 
-<div class="hero">
-<h1>Trade. Prove. Get Funded.</h1>
-<p>NovaFund is a simulated funded-trading platform prototype.</p>
-<a class="btn" href="#plans">View Challenges</a>
-<a class="btn" href="#dashboard">Trader Dashboard</a>
+<div class="logo">NovaFund</div>
+
+<div id="login">
+<h1>Trader Login</h1>
+<p>Demo Trading Account</p>
+<input placeholder="Email">
+<input type="password" placeholder="Password">
+<button onclick="login()">Login</button>
 </div>
 
-<section id="plans">
-<h2>Challenge Plans</h2>
+<div id="dashboard">
+<h1>Trader Dashboard</h1>
+<p>Account: <b>$5,000 Challenge</b></p>
+
 <div class="grid">
-<div class="card"><h3>$5K Challenge</h3><div class="price">$—</div><p class="muted">Price to be decided</p><ul><li>Profit target: 8%</li><li>Daily loss: 5%</li><li>Max drawdown: 10%</li><li>Demo/simulated account</li></ul><a class="btn" href="#dashboard">Select</a></div>
-<div class="card"><h3>$10K Challenge</h3><div class="price">$—</div><p class="muted">Price to be decided</p><ul><li>Profit target: 8%</li><li>Daily loss: 5%</li><li>Max drawdown: 10%</li><li>Demo/simulated account</li></ul><a class="btn" href="#dashboard">Select</a></div>
-<div class="card"><h3>$25K Challenge</h3><div class="price">$—</div><p class="muted">Price to be decided</p><ul><li>Profit target: 8%</li><li>Daily loss: 5%</li><li>Max drawdown: 10%</li><li>Demo/simulated account</li></ul><a class="btn" href="#dashboard">Select</a></div>
+<div class="card">Balance<div class="value">$5,240</div></div>
+<div class="card">Equity<div class="value">$5,215</div></div>
+<div class="card">Profit<div class="value green">+$240</div></div>
+<div class="card">Profit Target<div class="value">8%</div></div>
+<div class="card">Daily Loss<div class="value">1.2%</div></div>
+<div class="card">Max Drawdown<div class="value">2.1%</div></div>
 </div>
-</section>
 
-<section id="rules">
-<h2>Example Rules</h2>
-<div class="grid">
-<div class="card"><h3>Risk</h3><p>Daily loss and maximum drawdown are monitored against the simulated account balance/equity.</p></div>
-<div class="card"><h3>Trading</h3><p>Define allowed instruments, lot limits, news rules and holding rules before launch.</p></div>
-<div class="card"><h3>Payout</h3><p>Do not promise real payouts until the business, payment flow and applicable legal/compliance requirements are set up.</p></div>
-</div>
-</section>
-
-<section id="dashboard">
-<div class="dashboard">
-<h2>Trader Dashboard — Demo</h2>
-<div class="grid">
-<div class="card"><span class="tag">ACTIVE</span><p class="muted">Account</p><div class="stat">$5,000</div></div>
-<div class="card"><p class="muted">Equity</p><div class="stat">$5,240</div><p>+4.80%</p></div>
-<div class="card"><p class="muted">Profit Target</p><div class="stat">8%</div><p>Progress: 60%</p></div>
-<div class="card"><p class="muted">Max Drawdown</p><div class="stat">10%</div><p>Used: 2.1%</p></div>
-</div>
 <br>
-<div class="card"><h3>Next step</h3><p>Connect this prototype to a real database, authentication, payment provider and trading/risk API only after the business and compliance setup is ready.</p></div>
+<div class="card">
+<h2>Recent Trades</h2>
+<p>XAUUSD — BUY — <span class="green">+$85</span></p>
+<p>EURUSD — SELL — <span class="green">+$55</span></p>
+<p>GBPUSD — BUY — <span style="color:red">-$20</span></p>
 </div>
-</section>
+</div>
 
-<footer>NovaFund Prototype • Built as a zero-budget starting template • Not a broker or live trading service</footer>
+<script>
+function login(){
+document.getElementById("login").style.display="none";
+document.getElementById("dashboard").style.display="block";
+}
+</script>
+
 </body>
 </html>
